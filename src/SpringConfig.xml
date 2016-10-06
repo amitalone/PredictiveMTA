@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 
+	<mongo:mongo host="76.74.218.120" port="27017"  />
+	  <mongo:db-factory id="mongoDbFactory"
+                  host="mongoserver"
+                  port="27017"
+                  dbname="supermailer"
+                  username="xxxx"
+                  password="xxx"/>
+ 
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+ 	
+ 	<bean id="subscriberDAO" class="com.alcance.predictivemta.dao.SubscriberDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>
+ 
+ 	<bean id="subscriberListDAO" class="com.alcance.predictivemta.dao.SubscriberListDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>
+    
+    <bean id="campaingDAO" class="com.alcance.predictivemta.dao.CampaingDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>         
+	 
+	 <bean id="mailingIPDAO" class="com.alcance.predictivemta.infrastructure.MailingIPDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>
+	
+	 <bean id="espMailingResourceDAO" class="com.alcance.predictivemta.dao.ESPMailingResourceDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>
+ 	
+ 	<bean id="globalMessageHistory" class="com.alcance.predictivemta.dao.GlobalMessageHistoryDAO" >
+ 		<constructor-arg name="operations" ref="mongoTemplate" />
+ 	</bean>
+ 	
+ 	<bean id="configBean" class="com.alcance.predictivemta.ConfigurationBean" scope="singleton">
+ 		 <property name="clickLink" value="http://sendlabs.net/link.php"/>
+ 		 <property name="trackinkingPixelLink" value="http://sendlabs.net/open.php"/>
+ 	</bean>
+</beans>
